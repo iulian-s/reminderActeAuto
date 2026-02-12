@@ -27,13 +27,13 @@ class Document(
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "vehicle_id")
-    var vehicle: Vehicle? = null,
+    var vehicle: Vehicle,
 
-    @Column(name = "type", nullable = true)
-    var type: String? = null,
+    @Column(name = "type", nullable = false)
+    var type: String,
 
-    @Column(name = "expiry_date", nullable = true)
-    var expiryDate: LocalDate? = null,
+    @Column(name = "expiry_date", nullable = false)
+    var expiryDate: LocalDate,
 
     @Column(name = "notification_14_sent")
     var notification14Sent: Boolean = false,

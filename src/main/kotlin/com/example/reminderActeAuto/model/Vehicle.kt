@@ -28,7 +28,7 @@ class Vehicle(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    var user: User? = null,
+    var user: User,
 
     @Column(name = "brand")
     var brand: String,
