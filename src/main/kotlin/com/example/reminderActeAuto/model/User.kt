@@ -40,6 +40,5 @@ class User(
 
     fun removeVehicle(vehicle: Vehicle){
         vehicles.remove(vehicle)
-        vehicle.user = null
     }
 }
