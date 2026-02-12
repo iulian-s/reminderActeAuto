@@ -1,6 +1,5 @@
 package com.example.reminderActeAuto.responseDTO
 
-import com.example.reminderActeAuto.model.Vehicle
 import java.time.LocalDateTime
 
 /**

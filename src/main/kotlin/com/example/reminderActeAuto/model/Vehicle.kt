@@ -50,6 +50,5 @@ class Vehicle(
 
     fun removeDocument(document: Document){
         documents.remove(document)
-        document.vehicle = null
     }
 }
