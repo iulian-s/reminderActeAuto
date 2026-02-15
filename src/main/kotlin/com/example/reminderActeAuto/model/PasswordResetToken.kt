@@ -35,5 +35,8 @@ class PasswordResetToken(
     var expiresAt: LocalDateTime? = null,
 
     @Column(name = "used")
-    var used: Boolean = false
+    var used: Boolean = false,
+
+    @Column(name = "created_at", updatable = false)
+    var createdAt: LocalDateTime? = null,
 )

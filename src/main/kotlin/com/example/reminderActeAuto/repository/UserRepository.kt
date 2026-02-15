@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository
 interface UserRepository: JpaRepository<User, Long> {
     @EntityGraph(attributePaths = ["vehicles", "vehicles.documents"]) //generates suitable joins to prevent N+1, useful for the dashboard
     fun findWithVehiclesAndDocumentsById(id: Long): User?
+
+    fun findByEmail(email: String): User?
 }
