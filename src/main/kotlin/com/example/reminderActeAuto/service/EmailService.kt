@@ -26,4 +26,13 @@ class EmailService(
         message.text = "Codul tau pentru resetarea parolei este: $token"
         mailSender.send(message)
     }
+
+    @Async
+    fun sendRegistrationEmail(to: String){
+        val message = SimpleMailMessage()
+        message.setTo(to)
+        message.subject = "Inregistrare $to"
+        message.text = "Multumim pentru crearea contului pe platforma noastra, speram sa gasiti aceasta aplicatie utila"
+        mailSender.send(message)
+    }
 }

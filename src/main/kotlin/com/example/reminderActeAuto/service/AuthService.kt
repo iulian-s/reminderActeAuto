@@ -35,6 +35,7 @@ class AuthService(
             isVerified = false
         )
         userRepository.save(user)
+        emailService.sendRegistrationEmail(request.email)
     }
 
     fun login(request: UserRequestDTO): String {
