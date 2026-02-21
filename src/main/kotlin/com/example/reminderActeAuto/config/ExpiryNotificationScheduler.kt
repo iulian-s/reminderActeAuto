@@ -25,7 +25,7 @@ class ExpiryNotificationScheduler(
         tokenRepository.deleteOldOrUsedTokens(twentyFourHoursAgo)
     }
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 7 * * *")
     @Transactional
     fun checkDocumentExpirations(){
         val today = LocalDate.now()
@@ -37,10 +37,13 @@ class ExpiryNotificationScheduler(
                 daysUntilExpiry <= 3 && !doc.notification3Sent -> {
                     sendAlert(user, doc, 3)
                     doc.notification3Sent = true
+                    doc.notification7Sent = true
+                    doc.notification14Sent = true
                 }
                 daysUntilExpiry <= 7 && !doc.notification7Sent -> {
                     sendAlert(user, doc, 7)
                     doc.notification7Sent = true
+                    doc.notification14Sent = true
                 }
                 daysUntilExpiry <= 14 && !doc.notification14Sent -> {
                     sendAlert(user, doc, 14)
@@ -51,6 +54,7 @@ class ExpiryNotificationScheduler(
     }
 
     fun sendAlert(user: User, doc: Document, days: Int){
-        emailService.sendExpiryEmail(user.email, doc.vehicle.brand, doc.type, days)
+        val car = "${doc.vehicle.brand}  ${doc.vehicle.model}"
+        emailService.sendExpiryEmail(user.email, car, doc.type, days)
     }
 }
