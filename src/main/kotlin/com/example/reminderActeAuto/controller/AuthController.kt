@@ -1,6 +1,5 @@
 package com.example.reminderActeAuto.controller
 
-import com.example.reminderActeAuto.requestDTO.ChangePasswordRequestDTO
 import com.example.reminderActeAuto.requestDTO.ForgotPasswordRequestDTO
 import com.example.reminderActeAuto.requestDTO.ResetPasswordDTO
 import com.example.reminderActeAuto.requestDTO.UserRequestDTO
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.security.Principal
 
 @RestController
 @RequestMapping("/api/auth")
@@ -28,12 +26,6 @@ class AuthController(
     fun login(@Valid @RequestBody request: UserRequestDTO): ResponseEntity<AuthResponse>{
         val token = authService.login(request)
         return ResponseEntity.ok(AuthResponse(token))
-    }
-
-    @PostMapping("/change-password")
-    fun changePassword(@Valid @RequestBody request: ChangePasswordRequestDTO, principal: Principal): ResponseEntity<Void>{
-        authService.changePassword(principal.name, request)
-        return ResponseEntity.ok().build()
     }
 
     @PostMapping("/reset-password")
