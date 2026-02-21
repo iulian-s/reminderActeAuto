@@ -12,7 +12,7 @@ class EmailService(
     @Value("\${spring.mail.username}") private val fromEmail: String,
 ) {
     @Async
-    fun sendExpiryEmail(to: String, vehicleBrand: String, docType: String, days: Int){
+    fun sendExpiryEmail(to: String, vehicleBrand: String, docType: String, days: Long){
         val message = SimpleMailMessage()
         message.from = fromEmail
         message.setTo(to)

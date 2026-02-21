@@ -11,6 +11,8 @@ import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 @Service
 class DocumentService(
@@ -54,6 +56,9 @@ class DocumentService(
         }
         doc.type = request.type
         doc.expiryDate = request.expiryDate
+        doc.notification14Sent = false
+        doc.notification7Sent = false
+        doc.notification3Sent = false
         return documentRepository.save(doc).toResponseDTO().also { logger.info("Document {} updated successfully to vehicle {}", docId, doc.vehicle.id) }
     }
 }
