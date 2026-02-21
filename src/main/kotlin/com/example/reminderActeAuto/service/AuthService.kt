@@ -9,6 +9,7 @@ import com.example.reminderActeAuto.requestDTO.ForgotPasswordRequestDTO
 import com.example.reminderActeAuto.requestDTO.ResetPasswordDTO
 import com.example.reminderActeAuto.requestDTO.UserRequestDTO
 import jakarta.transaction.Transactional
+import org.slf4j.LoggerFactory
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -21,7 +22,9 @@ class AuthService(
     private val jwtService: JwtService,
     private val tokenRepository: PasswordResetTokenRepository,
     private val emailService: EmailService,
+    private val rateLimitService: RateLimitService
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
     fun register(request: UserRequestDTO){
         if(userRepository.findByEmail(request.email) != null) {
             throw RuntimeException("User already exists")
@@ -57,7 +60,7 @@ class AuthService(
 
     @Transactional
     fun resetPassword(request: ResetPasswordDTO){
-        val resetToken = tokenRepository.findValidByTokenHash(request.token) ?: throw RuntimeException("The token was used or expired!")
+        val resetToken = tokenRepository.findValidByTokenHash(request.token) ?: throw RuntimeException("The token is incorrect!")
         val user = resetToken.user
         val hashedPassword = requireNotNull(passwordEncoder.encode(request.newPassword)) {
             "Password Encoder returned null for password reset!"
@@ -70,14 +73,26 @@ class AuthService(
 
     @Transactional
     fun forgotPassword(request: ForgotPasswordRequestDTO){
+        val bucket = rateLimitService.resolveBucket(request.email)
+        if(!bucket.tryConsume(1)){
+            throw RuntimeException("Prea multe încercări. Vă rugăm să așteptați 15 minute.")
+        }
         val user = userRepository.findByEmail(request.email) ?: throw RuntimeException("User not found!")
         tokenRepository.deleteByUser(user)
         val rawToken = UUID.randomUUID().toString()
         val hashedToken = requireNotNull(passwordEncoder.encode(rawToken)){
             "Password Encoder returned null for token hashing"
         }
-        val resetToken = PasswordResetToken(user = user, tokenHash = hashedToken, used = false, createdAt = LocalDateTime.now(), expiresAt = LocalDateTime.now().plusMinutes(15))
+        val resetToken = PasswordResetToken(user = user, tokenHash = rawToken, used = false, createdAt = LocalDateTime.now(), expiresAt = LocalDateTime.now().plusMinutes(15))
         tokenRepository.save(resetToken)
         emailService.sendPasswordResetEmail(user.email, rawToken)
+    }
+
+    @Transactional
+    fun deleteAccount(email: String, inputPassword: String){
+        val user = userRepository.findByEmail(email)?: throw RuntimeException("User not found!")
+        if(!passwordEncoder.matches(inputPassword, user.passwordHash)) throw RuntimeException("Password does not match!")
+        userRepository.delete(user)
+        logger.info("User with email $email has deleted his account!")
     }
 }
