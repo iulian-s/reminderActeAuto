@@ -35,25 +35,25 @@ class ExpiryNotificationScheduler(
             val user = doc.vehicle.user
             when {
                 daysUntilExpiry <= 3 && !doc.notification3Sent -> {
-                    sendAlert(user, doc, 3)
+                    sendAlert(user, doc, daysUntilExpiry)
                     doc.notification3Sent = true
                     doc.notification7Sent = true
                     doc.notification14Sent = true
                 }
                 daysUntilExpiry <= 7 && !doc.notification7Sent -> {
-                    sendAlert(user, doc, 7)
+                    sendAlert(user, doc, daysUntilExpiry)
                     doc.notification7Sent = true
                     doc.notification14Sent = true
                 }
                 daysUntilExpiry <= 14 && !doc.notification14Sent -> {
-                    sendAlert(user, doc, 14)
+                    sendAlert(user, doc, daysUntilExpiry)
                     doc.notification14Sent = true
                 }
             }
         }
     }
 
-    fun sendAlert(user: User, doc: Document, days: Int){
+    fun sendAlert(user: User, doc: Document, days: Long){
         val car = "${doc.vehicle.brand}  ${doc.vehicle.model}"
         emailService.sendExpiryEmail(user.email, car, doc.type, days)
     }
