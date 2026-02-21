@@ -60,7 +60,7 @@ class AuthService(
         val resetToken = tokenRepository.findValidByTokenHash(request.token) ?: throw RuntimeException("The token was used or expired!")
         val user = resetToken.user
         val hashedPassword = requireNotNull(passwordEncoder.encode(request.newPassword)) {
-            "Password Encoder returned null for password change!"
+            "Password Encoder returned null for password reset!"
         }
         user.passwordHash = hashedPassword
         resetToken.used = true
@@ -74,7 +74,7 @@ class AuthService(
         tokenRepository.deleteByUser(user)
         val rawToken = UUID.randomUUID().toString()
         val hashedToken = requireNotNull(passwordEncoder.encode(rawToken)){
-            "Password Encoder returned null! for token hashing"
+            "Password Encoder returned null for token hashing"
         }
         val resetToken = PasswordResetToken(user = user, tokenHash = hashedToken, used = false, createdAt = LocalDateTime.now(), expiresAt = LocalDateTime.now().plusMinutes(15))
         tokenRepository.save(resetToken)

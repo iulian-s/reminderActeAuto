@@ -8,6 +8,7 @@ import com.example.reminderActeAuto.requestDTO.DocumentRequestDTO
 import com.example.reminderActeAuto.responseDTO.DocumentResponseDTO
 import jakarta.persistence.EntityNotFoundException
 import jakarta.transaction.Transactional
+import org.slf4j.LoggerFactory
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 
@@ -16,6 +17,7 @@ class DocumentService(
     val vehicleRepository: VehicleRepository,
     val documentRepository: DocumentRepository
 ) {
+    private val logger = LoggerFactory.getLogger(javaClass)
     @Transactional
     fun addDocument(email: String, vehicleId: Long, request: DocumentRequestDTO): DocumentResponseDTO {
         val vehicle = vehicleRepository.findById(vehicleId).orElseThrow{ Exception("No vehicle found with id: $vehicleId") }
@@ -28,6 +30,7 @@ class DocumentService(
             expiryDate = request.expiryDate
         )
         vehicle.addDocument(doc)
+        logger.info("Document {} added successfully to vehicle {} owned by user {}", doc.id, vehicleId, email)
         return documentRepository.save(doc).toResponseDTO()
     }
 
@@ -39,6 +42,7 @@ class DocumentService(
             throw AccessDeniedException("Not your vehicle mate")
         }
         documentRepository.delete(doc)
+        logger.info("Document {} removed successfully to vehicle {} of user {}", docId, doc.vehicle.id, email)
     }
 
     @Transactional
@@ -50,6 +54,6 @@ class DocumentService(
         }
         doc.type = request.type
         doc.expiryDate = request.expiryDate
-        return documentRepository.save(doc).toResponseDTO()
+        return documentRepository.save(doc).toResponseDTO().also { logger.info("Document {} updated successfully to vehicle {}", docId, doc.vehicle.id) }
     }
 }
