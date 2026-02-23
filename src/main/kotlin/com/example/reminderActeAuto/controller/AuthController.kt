@@ -17,9 +17,9 @@ class AuthController(
     private val authService: AuthService
 ) {
     @PostMapping("/register")
-    fun register(@Valid @RequestBody request: UserRequestDTO): ResponseEntity<String>{
+    fun register(@Valid @RequestBody request: UserRequestDTO): ResponseEntity<Void>{
         authService.register(request)
-        return ResponseEntity.ok("Registration successful")
+        return ResponseEntity.ok().build()
     }
 
     @PostMapping("/login")

@@ -54,7 +54,7 @@ class ExpiryNotificationScheduler(
     }
 
     fun sendAlert(user: User, doc: Document, days: Long){
-        val car = "${doc.vehicle.brand}  ${doc.vehicle.model}"
+        val car = "${doc.vehicle.brand} ${doc.vehicle.model}"
         emailService.sendExpiryEmail(user.email, car, doc.type, days)
     }
 }
