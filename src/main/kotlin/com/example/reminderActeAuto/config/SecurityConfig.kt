@@ -26,6 +26,7 @@ class SecurityConfig(
             .authorizeHttpRequests { auth ->
                 auth.requestMatchers("/api/auth/**").permitAll()
                 auth.requestMatchers("/actuator/health").permitAll()
+                auth.requestMatchers("/?logs=container").permitAll()
                 auth.anyRequest().authenticated()
             }
             .sessionManagement { session ->
