@@ -19,16 +19,12 @@ spring:
         format_sql: true
     show-sql: true
 
-  mail:
-    host: ${MAIL_HOST}
-    port: ${MAIL_PORT}
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
 
-    properties:
-      mail.smtp.auth: true
-      mail.smtp.starttls.enable: true
-#      mail.smtp.localhost: localhost
+resend:
+  api:
+    key: ${RESEND_API_KEY}
+  from:
+    email: ${RESEND_FROM_EMAIL}
 app.jwt.secret: ${JWT_SECRET}
 
 
