@@ -33,6 +33,7 @@ class EmailService(
         val subject = "Atentie, $docType expira in $days zile!"
         val text = "Buna ziua,\n\n$docType pentru $vehicleBrand va expira in $days zile!\nAcest email a fost trimis automat de catre aplicatia unui proiect personal, non-profit, iar introducerea datelor personale este riscanta si nerecomandata!"
         sendEmail(to, subject, text)
+        println("Sent expiry email to: $to")
     }
 
     @Async
@@ -40,6 +41,7 @@ class EmailService(
         val subject = "Resetare parola"
         val text = "Codul tau pentru resetarea parolei este: $token\nAcest email a fost trimis automat de catre aplicatia unui proiect personal, non-profit, iar introducerea datelor personale este riscanta si nerecomandata!"
         sendEmail(to, subject, text)
+        println("Sent password reset email to: $to")
     }
 
     @Async
@@ -47,5 +49,6 @@ class EmailService(
         val subject = "Inregistrare $to"
         val text = "Multumim pentru crearea contului pe platforma noastra!\nAcest email a fost trimis automat de catre aplicatia unui proiect personal, non-profit, iar introducerea datelor personale este riscanta si nerecomandata!"
         sendEmail(to, subject, text)
+        println("Sent registration email to: $to")
     }
 }
