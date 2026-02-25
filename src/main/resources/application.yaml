@@ -19,14 +19,16 @@ spring:
         format_sql: true
     show-sql: true
 
-#  mail:
-#    host: smtp.gmail.com
-#    port: 587
-#    username: your_email@gmail.com
-#    password: app-password
-#    properties:
-#      mail.smtp.auth: true
-#      mail.smtp.starttls.enable: true
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+#      mail.smtp.localhost: localhost
 app.jwt.secret: ${JWT_SECRET}
 
 
