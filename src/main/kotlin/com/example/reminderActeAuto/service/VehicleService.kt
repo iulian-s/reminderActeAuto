@@ -22,6 +22,11 @@ class VehicleService(
         return userRepository.findWithVehiclesAndDocumentsByEmail(email)?.toResponseDTO() ?: throw RuntimeException("No user found with email: $email")
     }
 
+    fun getVehicleById(id: Long): VehicleResponseDTO{
+        val vehicle = vehicleRepository.findById(id).orElseThrow { RuntimeException("No vehicle found with id: $id") }
+        return vehicle.toResponseDTO()
+    }
+
     @Transactional
     fun addVehicle(email: String, request: VehicleRequestDTO): VehicleResponseDTO {
         logger.info("Attempting to add new vehicle for user: {}", email)

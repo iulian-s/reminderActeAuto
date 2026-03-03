@@ -59,4 +59,9 @@ class DocumentService(
         doc.notification3Sent = false
         return documentRepository.save(doc).toResponseDTO().also { logger.info("Document {} updated successfully to vehicle {}", docId, doc.vehicle.id) }
     }
+
+    fun getDocumentsByVehicleId(vehicleId: Long): List<DocumentResponseDTO> {
+        val docs = documentRepository.findByVehicleId(vehicleId)
+        return docs.map{it.toResponseDTO()}
+    }
 }

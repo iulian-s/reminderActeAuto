@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -19,6 +20,13 @@ import java.security.Principal
 class DocumentController(
     private val documentService: DocumentService
 ) {
+
+    @GetMapping("/{vehicleId}")
+    fun getDocumentsByVehicleId(@PathVariable vehicleId: Long): ResponseEntity<List<DocumentResponseDTO>> {
+        val documents = documentService.getDocumentsByVehicleId(vehicleId)
+        return ResponseEntity.ok(documents)
+    }
+
     @PostMapping("/vehicle/{vehicleId}")
     fun addDocument(
         @PathVariable vehicleId: Long,

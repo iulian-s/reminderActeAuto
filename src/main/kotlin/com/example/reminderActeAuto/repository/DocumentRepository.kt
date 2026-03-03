@@ -1,6 +1,7 @@
 package com.example.reminderActeAuto.repository
 
 import com.example.reminderActeAuto.model.Document
+import com.example.reminderActeAuto.responseDTO.DocumentResponseDTO
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
@@ -17,4 +18,5 @@ interface DocumentRepository: JpaRepository<Document, Long> {
     """)
     fun findDocumentsNearExpiry(): List<Document>
 
+    fun findByVehicleId(vehicleId: Long): List<Document>
 }

@@ -25,6 +25,10 @@ class VehicleController (
     fun getMyVehiclesAndDocuments(principal: Principal): ResponseEntity<UserResponseDTO> {
         return ResponseEntity.ok(vehicleService.getMyVehiclesAndDocuments(principal.name))
     }
+    @GetMapping("/{id}")
+    fun getVehicleById(@PathVariable id: Long): ResponseEntity<VehicleResponseDTO> {
+        return ResponseEntity.ok(vehicleService.getVehicleById(id))
+    }
 
     @PostMapping
     fun addVehicle(
