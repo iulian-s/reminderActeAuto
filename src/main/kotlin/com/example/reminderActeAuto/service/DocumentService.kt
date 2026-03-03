@@ -11,8 +11,6 @@ import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
-import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 
 @Service
 class DocumentService(
