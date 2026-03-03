@@ -61,7 +61,7 @@ class DocumentService(
     }
 
     fun getDocumentsByVehicleId(vehicleId: Long): List<DocumentResponseDTO> {
-        val docs = documentRepository.findByVehicleId(vehicleId)
+        val docs = documentRepository.findByVehicle_Id(vehicleId)
         return docs.map{it.toResponseDTO()}
     }
 }

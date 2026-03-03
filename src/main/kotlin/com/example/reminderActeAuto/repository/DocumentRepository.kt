@@ -18,5 +18,5 @@ interface DocumentRepository: JpaRepository<Document, Long> {
     """)
     fun findDocumentsNearExpiry(): List<Document>
 
-    fun findByVehicleId(vehicleId: Long): List<Document>
+    fun findByVehicle_Id(id: Long): List<Document>
 }
