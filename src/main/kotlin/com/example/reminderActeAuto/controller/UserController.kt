@@ -3,10 +3,12 @@ package com.example.reminderActeAuto.controller
 import com.example.reminderActeAuto.requestDTO.ChangePasswordRequestDTO
 import com.example.reminderActeAuto.requestDTO.ForgotPasswordRequestDTO
 import com.example.reminderActeAuto.requestDTO.ResetPasswordDTO
+import com.example.reminderActeAuto.responseDTO.UserResponseDTO
 import com.example.reminderActeAuto.service.AuthService
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -32,5 +34,10 @@ class UserController(
     ): ResponseEntity<Void>{
         authService.deleteAccount(principal.name, inputPassword)
         return ResponseEntity.ok().build()
+    }
+
+    @GetMapping("/me")
+    fun getCurrentUser(principal: Principal): ResponseEntity<UserResponseDTO>{
+        return ResponseEntity.ok(authService.getUserDetailsByEmail(principal.name))
     }
 }

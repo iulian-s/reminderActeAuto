@@ -1,5 +1,6 @@
 package com.example.reminderActeAuto.service
 
+import com.example.reminderActeAuto.config.toResponseDTO
 import com.example.reminderActeAuto.model.PasswordResetToken
 import com.example.reminderActeAuto.model.User
 import com.example.reminderActeAuto.repository.PasswordResetTokenRepository
@@ -8,6 +9,7 @@ import com.example.reminderActeAuto.requestDTO.ChangePasswordRequestDTO
 import com.example.reminderActeAuto.requestDTO.ForgotPasswordRequestDTO
 import com.example.reminderActeAuto.requestDTO.ResetPasswordDTO
 import com.example.reminderActeAuto.requestDTO.UserRequestDTO
+import com.example.reminderActeAuto.responseDTO.UserResponseDTO
 import jakarta.transaction.Transactional
 import org.slf4j.LoggerFactory
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -94,5 +96,10 @@ class AuthService(
         if(!passwordEncoder.matches(inputPassword, user.passwordHash)) throw RuntimeException("Password does not match!")
         userRepository.delete(user)
         logger.info("User with email $email has deleted his account!")
+    }
+
+    fun getUserDetailsByEmail(email: String): UserResponseDTO{
+        val user = userRepository.findByEmail(email) ?: throw RuntimeException("User not found!")
+        return user.toResponseDTO()
     }
 }
