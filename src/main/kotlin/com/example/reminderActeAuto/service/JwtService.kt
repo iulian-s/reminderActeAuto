@@ -7,13 +7,14 @@ import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import java.time.Duration
 import java.util.Date
 
 @Service
 class JwtService {
     @Value("\${app.jwt.secret}")
     private lateinit var secret: String
-    private val expirationTime = 86400000
+    private val expirationTime = Duration.ofDays(30).toMillis()
 
     private fun getSignInKey() = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret))
 
