@@ -29,7 +29,7 @@ class VehicleService(
 
     @Transactional
     fun addVehicle(email: String, request: VehicleRequestDTO): VehicleResponseDTO {
-        logger.info("Attempting to add new vehicle for user: {}", email)
+        logger.info("Attempting to add a new vehicle for user: {}", email)
         val user = userRepository.findByEmail(email) ?: throw RuntimeException("No user found with email: $email").also {
             logger.error("Failed to add vehicle: User {} not found", email)
         }
